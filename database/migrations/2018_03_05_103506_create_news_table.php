@@ -18,6 +18,7 @@ class CreateNewsTable extends Migration
             $table->string('title');
             $table->string('title_slug');
             $table->text('body');
+            $table->string('status');
             $table->timestamps();
         });
     }

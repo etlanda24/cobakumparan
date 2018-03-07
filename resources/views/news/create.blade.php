@@ -19,6 +19,13 @@
 				<h2>New News</h2><br><br>
 				<label for="">Title :</label>
 				<input type="text" class="form-control" name="title"><br>
+				<label for="">Status :</label>
+				<select name="status" class="form-control">
+					<option value="" disabled="">Choose one..</option>
+					<option value="Published">Published</option>
+					<option value="Draft">Draft</option>
+					<option value="Deleted">Deleted</option>
+				</select><br>
 				<label for="">Topic :</label>
 				<select class="form-control select2-multi" name="topics[]" multiple="multiple">
 					@foreach($topics as $topic)

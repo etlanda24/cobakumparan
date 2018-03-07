@@ -18,9 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/topics', function(){
-	return view('topics.index');
-});
+
 Route::resource('topics','TopicController',['except' => ['create']]);
 Route::resource('news','NewsController');
 // Route::get('news/show/{id}','NewsController@show');

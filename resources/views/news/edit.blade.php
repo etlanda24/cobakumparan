@@ -16,6 +16,18 @@
 				<h2>Edit News</h2><br><br>
 				<label for="">Title :</label>
 				<input type="text" class="form-control" name="title" value="{{$news->title}}"><br>
+				<label for="">Status :</label>
+				<select name="status" class="form-control">				
+					<option value="Published" @if ($news->status=="Published")
+					selected
+					@endif>Published</option>
+					<option value="Draft" @if ($news->status=="Draft")
+					selected
+					@endif>Draft</option>
+					<option value="Deleted" @if ($news->status=="Deleted")
+					selected
+					@endif>Deleted</option>
+				</select><br>
 				<label for="">Topic :</label>
 				<select class="form-control select2-multi" name="topics[]" multiple="multiple">
 					

@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Topic;
 use Session;
+use Response;
 
-class TopicController extends Controller
+class TopicApiController extends Controller
 {
 
     // public function __construct()
@@ -20,8 +21,9 @@ class TopicController extends Controller
      */
     public function index()
     {
-        $topics = Topic::all();
-        return view('topics.index')->withTopics($topics);
+
+        return Response::json(['topics' => $topics = Topic::all()],200);
+        
     }
 
     /**
@@ -43,13 +45,9 @@ class TopicController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, array('topic_name' => 'required|max:255'));
-        $topic = new Topic;
-        $topic->topic_name = $request->topic_name;
-        $topic->save();
-
-        Session::flash('success', 'New Topic was successfully created!');
-
-        return redirect()->route('topics.index');
+        return Topic::create([
+            'topic_name' => $request->json('topic_name')
+        ]);
     }
 
     /**
@@ -61,7 +59,14 @@ class TopicController extends Controller
     public function show($id)
     {
         $topic = Topic::find($id);
-        return view('topics.single')->withTopic($topic);
+        return Response::json(['topic' => $topic], 200);
+        
+    }
+
+    public function filter($id)
+    {
+        $topic = Topic::find($id);
+        return $topic->news;
     }
 
     /**
@@ -89,9 +94,7 @@ class TopicController extends Controller
         $topic->topic_name = $request->topic_name;
         $topic->save();
 
-        Session::flash('success', 'New Topic was successfully updated!');
-
-        return redirect()->route('topics.show',$id);
+        return $topic;
     }
 
     /**
@@ -107,7 +110,6 @@ class TopicController extends Controller
 
         $topic->delete();
 
-        Session::flash('success', 'The topic was successfully deleted.');
-        return redirect()->route('topics.index');
+        return('Berhasil Dihapus');  
     }
 }

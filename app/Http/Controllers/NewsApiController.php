@@ -9,7 +9,7 @@ use Session;
 use Response;
 use Illuminate\Support\Str;
 
-class NewsController extends Controller
+class NewsApiController extends Controller
 {
 
     // public function __construct()
@@ -23,10 +23,46 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::all();
-        // return Response::json(['news' => $news], 200);
-        // return $news;
-        return view('news.index')->withNews($news);
+        $news = News::with(
+            array('topics'=>function($query){
+                $query->select('topic_name');
+            })
+            )->get(); 
+        return Response::json(['news' => $news], 200);
+
+    }
+
+    public function published()
+    {
+        $news = News::where('status','Published')->with(
+            array('topics'=>function($query){
+                $query->select('topic_name');
+            })
+            )->get(); 
+        return Response::json(['news' => $news], 200);
+
+    }
+
+    public function draft()
+    {
+        $news = News::where('status','Draft')->with(
+            array('topics'=>function($query){
+                $query->select('topic_name');
+            })
+            )->get(); 
+        return Response::json(['news' => $news], 200);
+
+    }
+
+    public function deleted()
+    {
+        $news = News::where('status','Deleted')->with(
+            array('topics'=>function($query){
+                $query->select('topic_name');
+            })
+            )->get(); 
+        return Response::json(['news' => $news], 200);
+
     }
 
     /**
@@ -48,7 +84,6 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {        
-        
         $this->validate($request, array('title' => 'required|max:255','body' => 'required|max:255'));
         $news = new News;
         $news->title = $request->title;
@@ -59,9 +94,7 @@ class NewsController extends Controller
 
         $news->topics()->sync($request->topics,false);
 
-        Session::flash('success', 'New News was successfully created!');
-
-        return redirect()->route('news.index');
+        return Response::json(['news' => $news], 200);
     }
 
     /**
@@ -72,8 +105,13 @@ class NewsController extends Controller
      */
     public function show($id)
     {
-        $news = News::find($id);
-        return view('news.single')->withNews($news);
+        $news = News::with(
+            array('topics'=>function($query){
+                $query->select('topic_name');
+            })
+            )->find($id); 
+       
+        return Response::json(['news' => $news], 200);
     }
 
     /**
@@ -107,9 +145,9 @@ class NewsController extends Controller
 
         $news->topics()->sync($request->topics);
 
-        Session::flash('success', 'New News was successfully created!');
-
-        return redirect()->route('news.show',$id);
+        return Response::json(['news' => $news->with(array('topics'=>function($query){
+                $query->select('topic_name');
+                }))->find($id)], 200);
     }
 
     /**
@@ -125,7 +163,6 @@ class NewsController extends Controller
 
         $news->delete();
 
-        Session::flash('success', 'The topic was successfully deleted.');
-        return redirect()->route('news.index');
+        return ('Berhasil Dihapus');
     }
 }

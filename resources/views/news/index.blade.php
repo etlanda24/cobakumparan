@@ -20,6 +20,7 @@
 						<th>#</th>
 						<th>Title</th>
 						<th>Body</th>
+						<th>Status</th>
 						<th>Created</th>
 						<th></th>
 					</tr>
@@ -30,7 +31,16 @@
 						<tr>
 							<th>{{ $news->id }}</th>
 							<td><a href="/news/{{$news->id}}">{{ $news->title }}</a></td>
-							<td>{{ substr($news->body, 0, 50) }}{{ strlen($news->body) > 50 ? "..." : "" }}</td>
+							<td>{{ substr($news->body, 0, 50) }}{{ strlen($news->body) > 50 ? "..." : "" }}</td>							
+							<th>
+								@if ($news->status == 'Published')
+								<span class="label label-success">{{$news->status}}</span>
+								@elseif ($news->status == 'Draft')						
+									<span class="label label-warning">{{$news->status}}</span>
+								@else						
+									<span class="label label-danger">{{$news->status}}</span>
+								@endif
+							</th>
 							<td>{{ date('M j, Y', strtotime($news->created_at)) }}</td>
 							<td><a href="{{ route('news.show', $news->id) }}" class="btn btn-default btn-sm">View</a> <a href="{{ route('news.edit', $news->id) }}" class="btn btn-default btn-sm">Edit</a></td>
 						</tr>

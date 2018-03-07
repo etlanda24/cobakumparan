@@ -20,6 +20,19 @@
 				</div>
 
 				<div style="margin-bottom: 10px;">
+					<label for="">Status :</label>
+					<div class="topics">
+					@if ($news->status == 'Published')
+						<span class="label label-success">{{$news->status}}</span>
+					@elseif ($news->status == 'Draft')						
+						<span class="label label-warning">{{$news->status}}</span>
+					@else						
+						<span class="label label-danger">{{$news->status}}</span>
+					@endif
+					</div>
+				</div>
+
+				<div style="margin-bottom: 10px;">
 					<label for="">Topics :</label>
 					<div class="topics">
 						@foreach ($news->topics as $topic)
