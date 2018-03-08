@@ -72,8 +72,7 @@ class NewsApiController extends Controller
      */
     public function create()
     {
-        $topics = Topic::all();
-        return view('news.create')->withTopics($topics);
+        //
     }
 
     /**
@@ -122,9 +121,7 @@ class NewsApiController extends Controller
      */
     public function edit($id)
     {
-        $news = News::find($id);
-        $topics = Topic::all();
-        return view('news.edit')->withNews($news)->withTopics($topics);
+        //
     }
 
     /**
